@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  createAt       DateTime         @default(now())
+  id             Int              @id @default(autoincrement())
+  email          String           @unique
+  nombre         String
+  password       String
+  preferencias   Json?
+  layout         String?
+  movimiento     Movimiento[]
+  categoria      Categoria[]
+  meta           Meta[]
+  pagoRecurrente PagoRecurrente[]
+  credito        Credito[]
+  deuda          Deuda[]
+  widget         Widget[]
+}
+
+model Categoria {
+  id             Int              @id @default(autoincrement())
+  usuario        Usuario          @relation(fields: [usuarioId], references: [id])
+  usuarioId      Int
+  nombre         String
+  movimiento     Movimiento[]
+  pagoRecurrente PagoRecurrente[]
+}
+
+model Movimiento {
+  id          Int       @id @default(autoincrement())
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int
+  fecha       DateTime
+  nombre      String
+  monto       Int
+  tipo        String //egreso o ingreso
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  descripcion String?
+}
+
+model Meta {
+  id            Int      @id @default(autoincrement())
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+  nombre        String
+  montoObjetivo Float
+  montoActual   Float
+  fechaInicio   DateTime
+  fechaFin      DateTime
+  estado        String
+}
+
+model PagoRecurrente {
+  id           Int       @id @default(autoincrement())
+  usuario      Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId    Int
+  nombre       String
+  monto        Float
+  frecuencia   Int
+  proximaFecha DateTime
+  pagado       Boolean
+  categoria    Categoria @relation(fields: [categoriaId], references: [id])
+  categoriaId  Int
+}
+
+model Credito {
+  id            Int      @id @default(autoincrement())
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+  nombre        String
+  montoTotal    Float
+  montoRestante Float
+  fechaLimite   DateTime
+  tasa          Float
+  diaPago       DateTime
+}
+
+model Deuda {
+  id            Int      @id @default(autoincrement())
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+  nombre        String
+  montoTotal    Float
+  montoRestante Float
+  fechaLimite   DateTime
+}
+
+model Widget {
+  id        Int     @id @default(autoincrement())
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  tipo      String
+  posicion  String
+}
