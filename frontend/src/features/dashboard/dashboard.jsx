@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import api from './../login/services/api'
+import api from '../../services/api'
 
 function Dashboard() {
   const [usuarios, setUsuarios] = useState([]);
