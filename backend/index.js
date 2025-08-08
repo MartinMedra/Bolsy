@@ -57,7 +57,7 @@ app.get('/movimientos/ingreso/:id', async (req, res)=>{
 app.post('/ingreso/agregar', async (req, res)=>{
     try {
         const { usuarioId, fecha, nombre, monto, categoriaId, descripcion } = req.body;
-        const categoriaExiste = prisma.categoria.findUnique({where: {id: categoriaId}})
+        const categoriaExiste = await prisma.categoria.findUnique({where: {id: categoriaId}})
         if(!categoriaExiste){
             res.status(400).json("La categoría no se ha encontrado")
         }
@@ -109,7 +109,7 @@ app.post('/egreso/agregar', async (req, res)=>{
         const categoriaExiste = await prisma.categoria.findUnique({
             where : {id: parseInt(categoriaId)}
         });
-        if(!categoriaId){
+        if(!categoriaExiste){
             res.status(400).json({message:'No se ha encontrado la categoria'})
         }
 
