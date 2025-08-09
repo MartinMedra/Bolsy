@@ -1,16 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from '../../../services/api'
 
 export function useEgreso(){
     
-    const [usuarioId, setUsuarioId] = useState();
+    const [usuarioId, setUsuarioId] = useState('');
     const [fecha, setFecha] = useState('');
     const [nombre, setNombre] = useState('');
-    const [categoriaId, setCategoriaId] = useState();
+    const [categoriaId, setCategoriaId] = useState('');
     const [monto, setMonto] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [mensaje, setMensaje] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const [movimientoEgreso, setmovimientoEgreso]= useState([]);
+
+    useEffect(()=>{
+        if (usuarioId){
+            api.get(`/movimientos/egreso/${usuarioId}`)
+            .then(res => setmovimientoEgreso(res.data))
+            .catch(error => console.log(error))
+        }
+    }, [usuarioId])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,10 +29,10 @@ export function useEgreso(){
         try {
             await api.post('/egreso/agregar',{usuarioId: parseInt(usuarioId),fecha,nombre,monto: parseFloat(monto),categoriaId: parseInt(categoriaId),descripcion});
             setMensaje('Registro de egreso exitoso')
-            setUsuarioId();
+            setUsuarioId('');
             setFecha('');
             setNombre('');
-            setCategoriaId();
+            setCategoriaId('');
             setMonto('')
             setDescripcion('')
 
@@ -32,6 +42,7 @@ export function useEgreso(){
             setLoading(false)
         }
     }
+
 
     return {
         usuarioId,
@@ -48,5 +59,6 @@ export function useEgreso(){
         setDescripcion,
         handleSubmit,
         mensaje,
+        movimientoEgreso
     }
 }

@@ -19,10 +19,11 @@ function Ingreso() {
       setMensaje,
       loading,
       handleSubmit,
+      movimientoIngreso
     } = useIngreso();
 
     return(
-    <>
+    <div>
         <h1>Registro de Ingreso</h1>
 
         <form onSubmit={handleSubmit}>
@@ -59,7 +60,14 @@ function Ingreso() {
             <button type="submit">Agregar Ingreso</button>
             {mensaje && <p>{mensaje}</p>}
         </form>
-    </>
+
+        <ul>
+            {movimientoIngreso.map((mov) =>(
+                <li key={mov.id}> {mov.fecha} | {mov.nombre} | ${mov.monto} | {mov.tipo} | {mov.descripcion}</li>
+            )
+            )}
+        </ul>
+    </div>
     )
 }
 export default Ingreso

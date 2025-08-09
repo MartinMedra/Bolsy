@@ -1,15 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from '../../../services/api.js'
 
 export function useIngreso(){
-    const [usuarioId, setUsuarioId] = useState();
+    const [usuarioId, setUsuarioId] = useState('');
     const [fecha, setFecha] = useState('');
     const [nombre, setNombre] = useState('');
     const [monto, setMonto] = useState('');
-    const [categoriaId, setCategoriaId] = useState();
+    const [categoriaId, setCategoriaId] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [mensaje, setMensaje] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const [movimientoIngreso, setmovimientoIngreso] = useState([]);
+
+    useEffect(()=> {
+        if(usuarioId){
+            api.get(`/movimientos/ingreso/${usuarioId}`)
+            .then(res => setmovimientoIngreso(res.data))
+            .catch(error => console.log(error))
+        }
+    }, [usuarioId])
 
     const handleSubmit = async (e) => {
 
@@ -19,8 +29,8 @@ export function useIngreso(){
         try{
             await api.post('/ingreso/agregar',{usuarioId: parseInt(usuarioId),fecha,nombre,monto: parseFloat(monto),categoriaId: parseInt(categoriaId),descripcion});
             setMensaje('Ingreso exitoso');
-            setUsuarioId();
-            setCategoriaId();
+            setUsuarioId('');
+            setCategoriaId('');
             setDescripcion('');
             setMonto('');
             setNombre('');
@@ -48,6 +58,7 @@ export function useIngreso(){
         mensaje,
         setMensaje,
         loading,
-        handleSubmit
+        handleSubmit,
+        movimientoIngreso
     }
 }

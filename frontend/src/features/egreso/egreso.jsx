@@ -15,7 +15,7 @@ export default function Egreso(){
         descripcion,
         setDescripcion,
         handleSubmit,
-        mensaje} = useEgreso();
+        mensaje, movimientoEgreso} = useEgreso();
 
 
     return(
@@ -50,7 +50,13 @@ export default function Egreso(){
                 <button type="submit">Registrar Egreso</button>
                 {mensaje && <p>{mensaje}</p>}
             </form>
-
+        <ul>
+            {movimientoEgreso.map((mov)=>(
+                <li key={mov.id}>
+                    {mov.fecha?.slice(0,10)} | {mov.nombre} | {mov.tipo} | ${mov.monto} | {mov.descripcion}
+                </li>
+            ))}
+        </ul>
         </div>
         
     )
