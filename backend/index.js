@@ -132,6 +132,35 @@ app.post('/egreso/agregar', async (req, res)=>{
     }
 })
 
+//CATEGORIAS
+
+//Agregar
+app.post('/categoria/agregar', async (req, res) =>{
+    const {usuarioId, nombre} = req.body;
+
+    try {
+        const agregarCategoria = await prisma.categoria.create({
+            data: {usuarioId: parseInt(usuarioId), nombre}
+        })
+        res.json(agregarCategoria)
+    } catch (error) {
+        res.json({message: error.message})
+    }
+})
+
+//Consultar
+app.get('/categoria/consultar', async (req,res)=>{
+
+})
+//Modificar
+app.put('/categoria/modificar', async (req,res)=>{
+
+})
+//Eliminar
+app.delete('/categoria/eliminar', async (req, res)=>{
+    
+})
+
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 })

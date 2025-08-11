@@ -15,6 +15,7 @@ export default function Egreso(){
         descripcion,
         setDescripcion,
         handleSubmit,
+        loading,
         mensaje, movimientoEgreso} = useEgreso();
 
 
@@ -47,8 +48,9 @@ export default function Egreso(){
                 placeholder="Introduce la descripcion"
                 value={descripcion}
                 onChange={(e)=>setDescripcion(e.target.value)} />
-                <button type="submit">Registrar Egreso</button>
+                <button type="submit" disabled={loading}>{loading ? 'Cargando egreso' : 'Registrar egreso'}</button>
                 {mensaje && <p>{mensaje}</p>}
+                
             </form>
         <ul>
             {movimientoEgreso.map((mov)=>(

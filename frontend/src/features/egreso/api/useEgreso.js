@@ -59,6 +59,7 @@ export function useEgreso(){
         setDescripcion,
         handleSubmit,
         mensaje,
+        loading,
         movimientoEgreso
     }
 }

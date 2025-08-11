@@ -57,7 +57,7 @@ function Ingreso() {
             placeholder="Descripcion del ingreso"
             value={descripcion}
             onChange={(e)=> setDescripcion(e.target.value)} />
-            <button type="submit">Agregar Ingreso</button>
+            <button type="submit" disabled={loading}>{loading ? 'Cargando Ingreso..':'Registrar ingreso'}</button>
             {mensaje && <p>{mensaje}</p>}
         </form>
 
