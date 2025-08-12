@@ -149,7 +149,17 @@ app.post('/categoria/agregar', async (req, res) =>{
 })
 
 //Consultar
-app.get('/categoria/consultar', async (req,res)=>{
+app.get('/categoria/consultar/:id', async (req,res)=>{
+    try {
+        categorias = await prisma.categoria.findMany({
+            where : {usuarioId: parseInt(req.params.id)}
+        })
+        res.json(categorias)
+        
+    } catch (error) {
+        res.json({message : error.message})
+    }
+
 
 })
 //Modificar
