@@ -1,20 +1,23 @@
-#Usa imagen oficial de Node.js
+# Usa imagen oficial de Node.js
 FROM node:20
 
-#Crea y usa el directorio de trabajo
+# Crea y usa el directorio de trabajo
 WORKDIR /app
 
-#Copia archivos de dependencias
+# Copia archivos de dependencias
 COPY package*.json ./
 
-#Instala dependencias
+# Instala dependencias
 RUN npm install
 
-#Copia el resto del codigo
+# Copia el resto del código
 COPY . .
 
-#Expone el puerto de express
+# Genera el cliente de Prisma con los binarios correctos
+RUN npx prisma generate
+
+# Expone el puerto de Express
 EXPOSE 3001
 
-# Comando para iniciar la aplicacion
-CMD ["npm","start"]
+# Comando para iniciar la aplicación
+CMD ["node", "index.js"]
