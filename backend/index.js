@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 import usuario from './routes/usuario'
 import categoria from './routes/categoria'
 import movimiento from './routes/movimiento'
+import auth from './routes/auth'
 
 const app = express();
 const port  = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ const port  = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+app.use('/auth', auth)
 app.use('/usuario', usuario)
 app.use('/categoria', categoria)
 app.use('/movimiento', movimiento)
