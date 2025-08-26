@@ -12,3 +12,6 @@ router.get('/usuarios', async (req ,res)=>{
         res.json({error:error.message});
     }
 });
+
+
+module.exports = router;
