@@ -9,13 +9,13 @@ const auth = require('./routes/auth')
 
 const prisma = new PrismaClient();
 prisma.$connect().then(()=>console.log('Conectado a la base de datos')).catch(err => {
-    console.error('Error conectando a la base de datos', err)
+    console.error('❌ Error conectando a la base de datos', err)
 })
 const app = express();
 
 const port  = process.env.PORT || 3001;
 if(!process.env.DATABASE_URL){
-    console.error("DATABASE_URL no está configurada")
+    console.error("❌ DATABASE_URL no está configurada")
     process.exit(1);
 }
 
