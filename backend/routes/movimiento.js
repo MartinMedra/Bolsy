@@ -1,19 +1,22 @@
 const {PrismaClient} = require('@prisma/client')
 const {Router} = require('express')
 
+// MIDDLEWARE
+const {authMiddleware} = require('../middleware/auth')
+
 const prisma = new PrismaClient();
 const router = Router();
 
 //consultar todos los ingresos
-router.get('/movimientos/ingreso/:id', async (req, res)=>{
+router.get('/movimientos/ingreso/:id', authMiddleware, async (req, res)=>{
 
     try {
-        const egresos = await prisma.movimiento.findMany({
+        const ingreso = await prisma.movimiento.findMany({
             where : {usuarioId : parseInt(req.params.id), tipo: 'ingreso'},
             include : {categoria: true},
             orderBy : {fecha : 'desc'}
         });
-        res.status(200).json(egresos)
+        res.status(200).json(ingreso)
     } catch (error) {
         res.status(500).json({error: error.message})
     }
@@ -94,7 +97,7 @@ router.post('/egreso/agregar', async (req, res)=>{
         res.json(nuevoEgreso)
         
     } catch (error) {
-        res.status(200).json({message:error.message})
+        res.status(500).json({message:error.message})
     }
 })
 

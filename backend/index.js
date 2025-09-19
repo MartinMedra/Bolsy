@@ -7,6 +7,7 @@ const categoria = require('./routes/categoria')
 const movimiento = require('./routes/movimiento')
 const auth = require('./routes/auth')
 
+
 const prisma = new PrismaClient();
 prisma.$connect().then(()=>console.log('Conectado a la base de datos')).catch(err => {
     console.error('❌ Error conectando a la base de datos', err)
