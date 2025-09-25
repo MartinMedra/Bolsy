@@ -14,6 +14,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ✅ DEFINIR EL ENUM PRIMERO
+enum TipoMovimiento {
+  INGRESO
+  EGRESO
+}
+
 model Usuario {
   createAt       DateTime         @default(now())
   id             Int              @id @default(autoincrement())
@@ -29,6 +35,8 @@ model Usuario {
   credito        Credito[]
   deuda          Deuda[]
   widget         Widget[]
+  
+  @@map("usuarios") 
 }
 
 model Categoria {
@@ -38,19 +46,27 @@ model Categoria {
   nombre         String
   movimiento     Movimiento[]
   pagoRecurrente PagoRecurrente[]
+  
+  @@map("categorias")  
 }
 
 model Movimiento {
-  id          Int       @id @default(autoincrement())
-  usuario     Usuario   @relation(fields: [usuarioId], references: [id])
+  id          Int            @id @default(autoincrement())
   usuarioId   Int
-  fecha       DateTime
-  nombre      String
-  monto       Int
-  tipo        String //egreso o ingreso
-  categoria   Categoria @relation(fields: [categoriaId], references: [id])
   categoriaId Int
+  nombre      String
   descripcion String?
+  monto       Float
+  tipo        TipoMovimiento 
+  fecha       DateTime
+  activo      Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  usuario     Usuario        @relation(fields: [usuarioId], references: [id])
+  categoria   Categoria      @relation(fields: [categoriaId], references: [id])
+  
+  @@map("movimientos") 
 }
 
 model Meta {
@@ -63,6 +79,8 @@ model Meta {
   fechaInicio   DateTime
   fechaFin      DateTime
   estado        String
+  
+  @@map("metas") 
 }
 
 model PagoRecurrente {
@@ -76,6 +94,8 @@ model PagoRecurrente {
   pagado       Boolean
   categoria    Categoria @relation(fields: [categoriaId], references: [id])
   categoriaId  Int
+  
+  @@map("pagos_recurrentes") 
 }
 
 model Credito {
@@ -88,6 +108,8 @@ model Credito {
   fechaLimite   DateTime
   tasa          Float
   diaPago       DateTime
+  
+  @@map("creditos") 
 }
 
 model Deuda {
@@ -98,6 +120,8 @@ model Deuda {
   montoTotal    Float
   montoRestante Float
   fechaLimite   DateTime
+  
+  @@map("deudas") 
 }
 
 model Widget {
@@ -106,4 +130,6 @@ model Widget {
   usuarioId Int
   tipo      String
   posicion  String
+  
+  @@map("widgets") 
 }
