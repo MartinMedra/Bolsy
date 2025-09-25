@@ -42,7 +42,7 @@ app.use(express.json());
 app.use('/auth', auth)
 app.use('/usuarios', usuario)
 app.use('/categorias', categoria)
-app.use('/movimientos', authMiddleware ,movimiento)
+app.use('/movimientos', movimiento)
 
 app.get('/', (req, res) => {
     res.send('we did it!');
