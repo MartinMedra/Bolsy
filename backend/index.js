@@ -1,13 +1,13 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors')
-require('dotenv').config();
 const {PrismaClient} = require('@prisma/client')
 const usuario = require('./routes/usuario')
 const categoria = require('./routes/categoria')
 const movimiento = require('./routes/movimiento')
+const dashboard = require('./routes/dashboard')
 const auth = require('./routes/auth');
-
-const { authMiddleware } = require('./middleware/auth');
 
 
 const prisma = new PrismaClient();
@@ -43,6 +43,7 @@ app.use('/auth', auth)
 app.use('/usuarios', usuario)
 app.use('/categorias', categoria)
 app.use('/movimientos', movimiento)
+app.use('/dashboard', dashboard)
 
 app.get('/', (req, res) => {
     res.send('we did it!');
